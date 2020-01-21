@@ -11,8 +11,7 @@
 // constructor WITHOUT memory allocation
 ChatBot::ChatBot()
 {
-    // invalidate data handles
-    _image = nullptr;
+    _image = NULL;
     _chatLogic = nullptr;
     _rootNode = nullptr;
 }
@@ -44,8 +43,34 @@ ChatBot::~ChatBot()
 
 //// STUDENT CODE
 ////
+ChatBot::ChatBot(const ChatBot &source)
+{
+    std::cout << "ChatBot Copy Constructor" << std::endl;
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    //std::string filename = source._image->filename;
+    if (_image != NULL)
+    {
+        delete _image;
+        _image = NULL;
+    }
+    if (source._image != NULL)
+    {
+        _image = new wxBitmap(); 
+        std::cout << "here" << std::endl;
+        *_image = *(source._image);
+    }
+    //std::cout << "COPYING content of instance " << &source << " to instance " << this << std::endl;
+}
 
-////
+
+
+ChatBot::ChatBot(ChatBot &&source)
+{
+    std::cout << "ChatBot Move Constructor" << std::endl;
+	*this = std::move(source);    
+}
+
 //// EOF STUDENT CODE
 
 void ChatBot::ReceiveMessageFromUser(std::string message)
@@ -85,16 +110,22 @@ void ChatBot::ReceiveMessageFromUser(std::string message)
 void ChatBot::SetCurrentNode(GraphNode *node)
 {
     // update pointer to current node
+    std::cout << "in setcurrent " << node << std::endl;
     _currentNode = node;
 
     // select a random node answer (if several answers should exist)
     std::vector<std::string> answers = _currentNode->GetAnswers();
+   std::cout << "after answeers " << std::endl;
     std::mt19937 generator(int(std::time(0)));
     std::uniform_int_distribution<int> dis(0, answers.size() - 1);
     std::string answer = answers.at(dis(generator));
-
+ 	std::cout << _chatLogic << std::endl;
     // send selected node answer to user
-    _chatLogic->SendMessageToUser(answer);
+  	if (_chatLogic == nullptr)
+        std::cout << "Deleted _chatlogic " << std::endl;
+  	else
+    	_chatLogic->SendMessageToUser(answer);
+    std::cout << "after setcurrent" <<std::endl;
 }
 
 int ChatBot::ComputeLevenshteinDistance(std::string s1, std::string s2)
