@@ -58,8 +58,6 @@ public:
         _chatLogic = source._chatLogic;
         _rootNode = source._rootNode;
         _image = source._image; 
-        source._chatLogic = nullptr;
-        source._rootNode = nullptr;
         source._image = NULL;
         //std::cout << "MOVING (assign) instance " << &source << " to instance " << this << std::endl;
         return *this;
