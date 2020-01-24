@@ -134,8 +134,8 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                         // create new element if ID does not yet exist
                         if (newNode == _nodes.end())
                         {
-                          	std::unique_ptr<GraphNode> insertNode = std::make_unique<GraphNode>(id);
-                            _nodes.emplace_back(std::move(insertNode));
+                          	//std::unique_ptr<GraphNode> insertNode = ;
+                            _nodes.emplace_back(std::make_unique<GraphNode>(id));
                             newNode = _nodes.end() - 1; // get iterator to last element
 
                             // add all answers to current node
@@ -225,16 +225,13 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
   	//stackChackBot.SetRootNode(rootNode);
    
     //chatBot->SetRootNode(rootNode);
-    ChatBot stackChatBot("../images/chatbot.png");
-    stackChatBot.SetChatLogicHandle(this);
-    stackChatBot.SetRootNode(rootNode);
-    //ChatBot stackChatBot = std::move();
-    //ChatBot stackChatBot = std::move(*_chatBot);
-        //_chatBot = std::make_unique<ChatBot>(stackChatBot);
-    std::unique_ptr<ChatBot> chatBot = std::make_unique<ChatBot>(std::move(stackChatBot));
-    //*chatBot = std::move(stackChatBot);
-    _chatBot = chatBot.get();
+    ChatBot chatBot("../images/chatbot.png");
+    chatBot.SetChatLogicHandle(this); // pass handle to chatlogic to enable message-passing
+
+    // TASK 5 : add chatbot to graph root node
+    chatBot.SetRootNode(rootNode);
     rootNode->MoveChatbotHere(std::move(chatBot));
+    //rootNode->MoveChatbotHere(std::make_unique<ChatBot>(std::move(stackChatBot)));
     //_chatBot = rootNode->GetChatBotRaw();
   	
   	

@@ -31,37 +31,9 @@ public:
     ////
     void SetImage(std::string filename);
     ChatBot(const ChatBot &source);
-    ChatBot &operator=(const ChatBot &source) {
-        if (this == &source)
-            return *this;
-         std::cout << "ChatBot Copy Assignment Operator" << std::endl;
-        _chatLogic = source._chatLogic;
-        _rootNode = source._rootNode;
-         if (_image != NULL)
-        {
-            delete _image;
-            _image = NULL;
-        }
-        if (source._image != NULL)
-        {
-            _image = new wxBitmap(); 
-            *_image = *(source._image);
-        }
-        //std::cout << "COPYING content of instance " << &source << " to instance " << this << std::endl;
-        return *this;
-    };
+    ChatBot &operator=(const ChatBot &source); 
     ChatBot(ChatBot &&source);
-    ChatBot &operator=(ChatBot &&source) { 
-        std::cout << "ChatBot Move Assignment Operator" << std::endl;
-        if (this == &source)
-            return *this;
-        _chatLogic = source._chatLogic;
-        _rootNode = source._rootNode;
-        _image = source._image; 
-        source._image = NULL;
-        //std::cout << "MOVING (assign) instance " << &source << " to instance " << this << std::endl;
-        return *this;
-    };
+    ChatBot &operator=(ChatBot &&source); 
     ~ChatBot();
     ////
     //// EOF STUDENT CODE
